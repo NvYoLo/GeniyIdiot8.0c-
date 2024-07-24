@@ -100,15 +100,16 @@ namespace GeniyIdiotConsoleApp
             return random;
 
         }
-
-        static void Main(string[] args)
+        public static void StartMenu()
         {
             List<int> numbersBefore = new List<int>();
             int countQuestions = 5;
+            
             bool flagStartForTest = true;
             while (flagStartForTest)
             {
                 numbersBefore.Clear();
+                Console.Clear();
                 Console.WriteLine("Введите имя пользователя: ");
                 string userName = Console.ReadLine();
 
@@ -147,24 +148,45 @@ namespace GeniyIdiotConsoleApp
 
                     }
                 }
+                Console.Clear();
                 Console.Write($"{userName}, Ваш диагноз: ");
                 Console.WriteLine(GetDiagnosis(countRightAnswers, countQuestions));
                 Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
                 Console.WriteLine("--------------------------------------------------------------");
                 string Diagnosis = GetDiagnosis(countRightAnswers, countQuestions);
                 SaveFileResult(userName, countRightAnswers, Diagnosis);
-                Console.WriteLine("Хотите ли пройти тест снова? Введите ДА или НЕТ");
-                string userAnswerRepeatTest = Console.ReadLine();
-                if (userAnswerRepeatTest == "нет".ToLower())
-                {
-                    flagStartForTest = false;
-                    Console.WriteLine("Хотите ли посмотреть результаты тестирования? Введите ДА или НЕТ");
-                    string userAnswerForResultTest = Console.ReadLine();
-                    if (userAnswerForResultTest == "да".ToLower()) OpenFileResult();
-                }
-
-
+                flagStartForTest = false;
+                
             }
+        }
+
+        static void Main(string[] args)
+        {
+            bool flagStartMenu = true;
+            while (flagStartMenu)
+            {
+                Console.WriteLine("1. Пройти тестирование" +
+                "\n2. Посмотреть результаты" +
+                "\n3. Очистить консольное меню" +
+                "\n4. Закрыть приложение");
+                string InputSelect = Console.ReadLine();
+                int choise = 0;
+                bool choice_bool = int.TryParse(InputSelect, out choise);
+                switch (choise)
+                {
+                    case 1:
+                        {
+                            StartMenu();
+                        }; break;
+                    case 2: { OpenFileResult(); }; break;
+                    case 3: Console.Clear(); break;
+                    case 4: { flagStartMenu = false; }; break;
+                    default:
+                        Console.WriteLine("Такого пункта меню нет, попробуйте ввести заново");
+                        break;
+                }
+            }
+
 
 
         }
