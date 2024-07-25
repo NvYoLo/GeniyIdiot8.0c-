@@ -6,7 +6,6 @@ using System.Xml.Linq;
 
 namespace GeniyIdiotConsoleApp
 {
-
     internal class Program
     {
         public static void SaveFileResult(string userName, int countRightAnswers, string Diagnosis) // записать в файл
@@ -69,25 +68,15 @@ namespace GeniyIdiotConsoleApp
             return rating;
 
         }
-        public static List<string> GetQuestions() // получить вопрос
+        public static List<Question> GetQuestions() // получить вопрос
         {
-            List<string> questions = new List<string>();
-            questions.Add("Сколько будет два плюс два умноженное на два?");
-            questions.Add("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?");
-            questions.Add("На двух руках 10 пальцев. Сколько пальцев на 5 руках?");
-            questions.Add("Укол делают каждые полчаса, сколько нужно минут для трех уколов?");
-            questions.Add("Пять свечей горело, две потухли. Сколько свечей осталось?");
+            var questions = new List<Question>();
+            questions.Add(new Question("Сколько будет два плюс два умноженное на два?", 6));
+            questions.Add(new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9));
+            questions.Add(new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25));
+            questions.Add(new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60));
+            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
             return questions;
-        }
-        public static List<int> GetAnswer() // получить ответ
-        {
-            List<int> answers = new List<int>();
-            answers.Add(6);
-            answers.Add(9);
-            answers.Add(25);
-            answers.Add(60);
-            answers.Add(2);
-            return answers;
         }
         
         public static void StartMenu() // основная логика программы
@@ -95,15 +84,13 @@ namespace GeniyIdiotConsoleApp
             bool flagStartForTest = true;
             while (flagStartForTest)
             {
-               
                 Console.WriteLine("Введите имя пользователя: ");
                 string userName = Console.ReadLine();
 
                 var questions = GetQuestions();
 
-                var answers = GetAnswer();
                 int countQuestions = questions.Count;
-
+                
                 int countRightAnswers = 0;
                 var random = new Random();
 
@@ -111,14 +98,13 @@ namespace GeniyIdiotConsoleApp
                 {
                     Console.WriteLine($"Вопрос #{i + 1}");
                     var randomQuestionIndex = random.Next(0, questions.Count);
-                    Console.WriteLine(questions[randomQuestionIndex]);
+                    Console.WriteLine(questions[randomQuestionIndex].Text);
                     int userAnswer = GetDefNumber();
-                    if (userAnswer == answers[randomQuestionIndex])
+                    if (userAnswer == questions[randomQuestionIndex].Answer)
                     {
                         countRightAnswers++;
                     }
                     questions.RemoveAt(randomQuestionIndex);
-                    answers.RemoveAt(randomQuestionIndex);
                 }
                 Console.Clear();
                 Console.Write($"{userName}, Ваш диагноз: ");
@@ -152,6 +138,7 @@ namespace GeniyIdiotConsoleApp
 
         static void Main(string[] args)
         {
+            
             bool flagStartMenu = true;
             while (flagStartMenu)
             {
@@ -164,21 +151,13 @@ namespace GeniyIdiotConsoleApp
                 bool choice_bool = int.TryParse(InputSelect, out choise);
                 switch (choise)
                 {
-                    case 1:
-                        {
-                            StartMenu();
-                        }; break;
+                    case 1:{StartMenu();}; break;
                     case 2: { OpenFileResult(); }; break;
                     case 3: Console.Clear(); break;
                     case 4: { flagStartMenu = false; }; break;
-                    default:
-                        Console.WriteLine("Такого пункта меню нет, попробуйте ввести заново");
-                        break;
+                    default:Console.WriteLine("Такого пункта меню нет, попробуйте ввести заново");break;
                 }
             }
-
-
-
         }
     }
 }
