@@ -92,13 +92,10 @@ namespace GeniyIdiotConsoleApp
         
         public static void StartMenu() // основная логика программы
         {
-            List<int> numbersBefore = new List<int>();
-            
-
             bool flagStartForTest = true;
             while (flagStartForTest)
             {
-                numbersBefore.Clear();
+               
                 Console.WriteLine("Введите имя пользователя: ");
                 string userName = Console.ReadLine();
 
