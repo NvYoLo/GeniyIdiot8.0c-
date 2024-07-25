@@ -69,49 +69,31 @@ namespace GeniyIdiotConsoleApp
             return rating;
 
         }
-        public static string[] GetQuestions(int countQuestions) // получить вопрос
+        public static List<string> GetQuestions() // получить вопрос
         {
-            string[] questions = new string[countQuestions];
-            questions[0] = "Сколько будет два плюс два умноженное на два?";
-            questions[1] = "Бревно нужно распилить на 10 частей, сколько надо сделать распилов?";
-            questions[2] = "На двух руках 10 пальцев. Сколько пальцев на 5 руках?";
-            questions[3] = "Укол делают каждые полчаса, сколько нужно минут для трех уколов?";
-            questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
+            List<string> questions = new List<string>();
+            questions.Add("Сколько будет два плюс два умноженное на два?");
+            questions.Add("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?");
+            questions.Add("На двух руках 10 пальцев. Сколько пальцев на 5 руках?");
+            questions.Add("Укол делают каждые полчаса, сколько нужно минут для трех уколов?");
+            questions.Add("Пять свечей горело, две потухли. Сколько свечей осталось?");
             return questions;
         }
-        public static int[] GetAnswer(int countQuestions) // получить ответ
+        public static List<int> GetAnswer() // получить ответ
         {
-            int[] answers = new int[countQuestions];
-            answers[0] = 6;
-            answers[1] = 9;
-            answers[2] = 25;
-            answers[3] = 60;
-            answers[4] = 2;
+            List<int> answers = new List<int>();
+            answers.Add(6);
+            answers.Add(9);
+            answers.Add(25);
+            answers.Add(60);
+            answers.Add(2);
             return answers;
         }
-        public static int GetRandomNumber(int countQuestions, List<int> numbersBefore) // рандом для вопросов
-        {
-            Random rnd = new Random();
-            int random = rnd.Next(0, countQuestions);
-            while (true)
-            {
-                if (!numbersBefore.Contains(random))
-                {
-                    numbersBefore.Add(random);
-                    break;
-                }
-                else
-                {
-                    random = rnd.Next(0, countQuestions);
-                }
-            }
-            return random;
-
-        }
+        
         public static void StartMenu() // основная логика программы
         {
             List<int> numbersBefore = new List<int>();
-            int countQuestions = 5;
+            
 
             bool flagStartForTest = true;
             while (flagStartForTest)
@@ -120,24 +102,26 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine("Введите имя пользователя: ");
                 string userName = Console.ReadLine();
 
-                string[] questions = GetQuestions(countQuestions);
+                var questions = GetQuestions();
 
-                int[] answers = GetAnswer(countQuestions);
+                var answers = GetAnswer();
+                int countQuestions = questions.Count;
 
                 int countRightAnswers = 0;
+                var random = new Random();
 
                 for (int i = 0; i < countQuestions; i++)
                 {
-
-                    int value = GetRandomNumber(countQuestions, numbersBefore);
-
                     Console.WriteLine($"Вопрос #{i + 1}");
-                    Console.WriteLine(questions[value]);
+                    var randomQuestionIndex = random.Next(0, questions.Count);
+                    Console.WriteLine(questions[randomQuestionIndex]);
                     int userAnswer = GetDefNumber();
-                    if (userAnswer == answers[value])
+                    if (userAnswer == answers[randomQuestionIndex])
                     {
                         countRightAnswers++;
                     }
+                    questions.RemoveAt(randomQuestionIndex);
+                    answers.RemoveAt(randomQuestionIndex);
                 }
                 Console.Clear();
                 Console.Write($"{userName}, Ваш диагноз: ");
