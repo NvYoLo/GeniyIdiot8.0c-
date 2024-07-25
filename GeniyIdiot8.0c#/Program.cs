@@ -9,15 +9,14 @@ namespace GeniyIdiotConsoleApp
 
     internal class Program
     {
-        public static void SaveFileResult(string userName, int countRightAnswers, string Diagnosis)
+        public static void SaveFileResult(string userName, int countRightAnswers, string Diagnosis) // записать в файл
         {
-            string filename = @"C:\Users\VSPrudius\source\repos\GeniyIdiot8.0c#\result.txt";
+            string filename = @"result.txt";
             try
             {
                 using (StreamWriter writer = new StreamWriter(filename, true))
                 {
-                    writer.WriteLine("{0, -15} |{1, -29} | {2, -11} |", userName, countRightAnswers, Diagnosis);
-                    writer.WriteLine("--------------------------------------------------------------");
+                    writer.WriteLine($"{userName}#{countRightAnswers}#{Diagnosis}");
                     Console.WriteLine("Результат тестирования сохранен!");
                 }
 
@@ -27,17 +26,26 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine("Результат тестирования не сохранен!");
             }
         }
-        public static void OpenFileResult()
+        public static void OpenFileResult() // открыть файл для чтения результатов
         {
-            string filename = @"C:\Users\VSPrudius\source\repos\GeniyIdiot8.0c#\result.txt";
+            string filename = @"result.txt";
             Console.WriteLine("{0, -15} |{1, 11} | {2, 10} |", "Ваше имя", "Количество правильных ответов", "Ваш диагноз");
             Console.WriteLine("--------------------------------------------------------------");
             using (StreamReader reader = new StreamReader(filename))
             {
-                Console.WriteLine(reader.ReadToEnd());
+                while (!reader.EndOfStream)
+                {
+                    string line = reader.ReadLine();
+                    string[] values = line.Split('#');
+                    string name = values[0];
+                    int countRightAnswer = int.Parse(values[1]);
+                    string diagnosis = values[2];
+                    Console.WriteLine("{0, -15} |               {1, -14} |    {2, -8} |", name, countRightAnswer, diagnosis);
+                }
+                Console.WriteLine("--------------------------------------------------------------");
             }
         }
-        public static string GetDiagnosis(int count, int countQuestion)
+        public static string GetDiagnosis(int count, int countQuestion) // получить диагноз
         {
             double resultInPercent = ((double)count / countQuestion) * 100;
             var result = new Dictionary<int, string>
@@ -61,7 +69,7 @@ namespace GeniyIdiotConsoleApp
             return rating;
 
         }
-        public static string[] GetQuestions(int countQuestions)
+        public static string[] GetQuestions(int countQuestions) // получить вопрос
         {
             string[] questions = new string[countQuestions];
             questions[0] = "Сколько будет два плюс два умноженное на два?";
@@ -71,7 +79,7 @@ namespace GeniyIdiotConsoleApp
             questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
             return questions;
         }
-        public static int[] GetAnswer(int countQuestions)
+        public static int[] GetAnswer(int countQuestions) // получить ответ
         {
             int[] answers = new int[countQuestions];
             answers[0] = 6;
@@ -81,7 +89,7 @@ namespace GeniyIdiotConsoleApp
             answers[4] = 2;
             return answers;
         }
-        public static int GetRandomNumber(int countQuestions, List<int> numbersBefore)
+        public static int GetRandomNumber(int countQuestions, List<int> numbersBefore) // рандом для вопросов
         {
             Random rnd = new Random();
             int random = rnd.Next(0, countQuestions);
@@ -100,16 +108,15 @@ namespace GeniyIdiotConsoleApp
             return random;
 
         }
-        public static void StartMenu()
+        public static void StartMenu() // основная логика программы
         {
             List<int> numbersBefore = new List<int>();
             int countQuestions = 5;
-            
+
             bool flagStartForTest = true;
             while (flagStartForTest)
             {
                 numbersBefore.Clear();
-                Console.Clear();
                 Console.WriteLine("Введите имя пользователя: ");
                 string userName = Console.ReadLine();
 
@@ -126,26 +133,10 @@ namespace GeniyIdiotConsoleApp
 
                     Console.WriteLine($"Вопрос #{i + 1}");
                     Console.WriteLine(questions[value]);
-                    while (true)
+                    int userAnswer = GetDefNumber();
+                    if (userAnswer == answers[value])
                     {
-                        string userAnswerInput = Console.ReadLine();
-                        int userAnswer = 0;
-                        bool checkUserAnswer = int.TryParse(userAnswerInput, out userAnswer);
-
-                        if (checkUserAnswer)
-                        {
-                            int rightAnswer = answers[value];
-                            if (userAnswer == rightAnswer)
-                            {
-                                countRightAnswers++;
-                            }
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine($"{userName}, Пожалуйста введите число!");
-                        }
-
+                        countRightAnswers++;
                     }
                 }
                 Console.Clear();
@@ -156,7 +147,25 @@ namespace GeniyIdiotConsoleApp
                 string Diagnosis = GetDiagnosis(countRightAnswers, countQuestions);
                 SaveFileResult(userName, countRightAnswers, Diagnosis);
                 flagStartForTest = false;
-                
+
+            }
+        }
+        public static int GetDefNumber() // проверка на дурака
+        {
+            while (true)
+            {
+                try
+                {
+                    return int.Parse(Console.ReadLine());
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Введите пожалуйста число!");
+                }
+                catch (OverflowException e)
+                {
+                    Console.WriteLine("Число слишком большое! Введите число менее длинное");
+                }
             }
         }
 
