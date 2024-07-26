@@ -43,6 +43,11 @@ namespace GeniyIdiotConsoleApp
 
             return questions;
         }
+        public void DeleteQuestion(int NumberForDel)
+        {
+            
+            
+        }
 
 
     }

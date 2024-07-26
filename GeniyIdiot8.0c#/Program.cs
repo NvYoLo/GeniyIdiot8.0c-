@@ -8,7 +8,23 @@ namespace GeniyIdiotConsoleApp
 {
     public partial class Program
     {
-    
+        public static void FindIndexQuestion()
+        {
+            QuestionStorage questionStorage = new QuestionStorage();
+            Console.WriteLine("Выберите номер вопроса, который необходимо удалить :");
+            Console.WriteLine(new string('-', 90));
+            var listQuestion = questionStorage.GetAll();
+            int i = 1;
+            foreach (var item in listQuestion)
+            {
+                Console.WriteLine($"#{i}: {item.Text}");
+                i++;
+            }
+            int NumberQuestionForDel = GetDefNumber();
+            questionStorage.DeleteQuestion(NumberQuestionForDel);
+
+
+        }
         public static void AddQuestion()
         {
             Console.WriteLine("Введите текст вопроса : ");
@@ -100,7 +116,8 @@ namespace GeniyIdiotConsoleApp
                 "\n2. Посмотреть результаты" +
                 "\n3. Очистить консольное меню" +
                 "\n4. Добавить вопрос"+
-                "\n5. Закрыть приложение");
+                "\n5. Удалить существующий вопрос"+
+                "\n6. Закрыть приложение");
                 string InputSelect = Console.ReadLine();
                 int choise = 0;
                 bool choice_bool = int.TryParse(InputSelect, out choise);
@@ -110,7 +127,8 @@ namespace GeniyIdiotConsoleApp
                     case 2: { OpenFileResult(); }; break;
                     case 3: Console.Clear(); break;
                     case 4: { AddQuestion(); }; break;
-                    case 5: { flagStartMenu = false; }; break;
+                    case 5: { FindIndexQuestion(); }; break;
+                    case 6: { flagStartMenu = false; }; break;
                     default:Console.WriteLine("Такого пункта меню нет, попробуйте ввести заново");break;
                 }
             }
