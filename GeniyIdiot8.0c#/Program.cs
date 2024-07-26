@@ -6,92 +6,31 @@ using System.Xml.Linq;
 
 namespace GeniyIdiotConsoleApp
 {
-    internal class Program
+    public partial class Program
     {
-        public static void SaveFileResult(string userName, int countRightAnswers, string Diagnosis) // записать в файл
+    
+        public static void AddQuestion()
         {
-            string filename = @"result.txt";
-            try
-            {
-                using (StreamWriter writer = new StreamWriter(filename, true))
-                {
-                    writer.WriteLine($"{userName}#{countRightAnswers}#{Diagnosis}");
-                    Console.WriteLine("Результат тестирования сохранен!");
-                }
-
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Результат тестирования не сохранен!");
-            }
+            Console.WriteLine("Введите текст вопроса : ");
+            string newQuestion = Console.ReadLine();
+            Console.WriteLine("Введите ответ на данный вопрос : ");
+            int newAnswer = GetDefNumber();
+            var Question = new Question(newQuestion, newAnswer);
+            QuestionStorage.Add(Question);
         }
-        public static void OpenFileResult() // открыть файл для чтения результатов
-        {
-            string filename = @"result.txt";
-            Console.WriteLine("{0, -15} |{1, 11} | {2, 10} |", "Ваше имя", "Количество правильных ответов", "Ваш диагноз");
-            Console.WriteLine("--------------------------------------------------------------");
-            using (StreamReader reader = new StreamReader(filename))
-            {
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine();
-                    string[] values = line.Split('#');
-                    string name = values[0];
-                    int countRightAnswer = int.Parse(values[1]);
-                    string diagnosis = values[2];
-                    Console.WriteLine("{0, -15} |               {1, -14} |    {2, -8} |", name, countRightAnswer, diagnosis);
-                }
-                Console.WriteLine("--------------------------------------------------------------");
-            }
-        }
-        public static string GetDiagnosis(int count, int countQuestion) // получить диагноз
-        {
-            double resultInPercent = ((double)count / countQuestion) * 100;
-            var result = new Dictionary<int, string>
-            {
-                {0, "Идиот" },
-                {1, "Кретин" },
-                {20, "Дурак" },
-                {40, "Нормальный" },
-                {60, "Талант" },
-                {80, "Гений" }
-            };
-            string rating = "Unknown";
-            foreach (var item in result)
-            {
-                if (resultInPercent < item.Key)
-                {
-                    break;
-                }
-                rating = item.Value;
-            }
-            return rating;
-
-        }
-        public static List<Question> GetQuestions() // получить вопрос
-        {
-            var questions = new List<Question>();
-            questions.Add(new Question("Сколько будет два плюс два умноженное на два?", 6));
-            questions.Add(new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9));
-            questions.Add(new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25));
-            questions.Add(new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60));
-            questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
-            return questions;
-        }
-        
         public static void StartMenu() // основная логика программы
         {
+            
             bool flagStartForTest = true;
             while (flagStartForTest)
             {
                 Console.WriteLine("Введите имя пользователя: ");
-                string userName = Console.ReadLine();
-
-                var questions = GetQuestions();
-
+                User user = new User(Console.ReadLine());
+                QuestionStorage questionStorage = new QuestionStorage();
+                var questions = questionStorage.GetAll();
+                
                 int countQuestions = questions.Count;
                 
-                int countRightAnswers = 0;
                 var random = new Random();
 
                 for (int i = 0; i < countQuestions; i++)
@@ -102,17 +41,18 @@ namespace GeniyIdiotConsoleApp
                     int userAnswer = GetDefNumber();
                     if (userAnswer == questions[randomQuestionIndex].Answer)
                     {
-                        countRightAnswers++;
+                        user.AcceptRightAnswer();
                     }
                     questions.RemoveAt(randomQuestionIndex);
                 }
+                
                 Console.Clear();
-                Console.Write($"{userName}, Ваш диагноз: ");
-                Console.WriteLine(GetDiagnosis(countRightAnswers, countQuestions));
-                Console.WriteLine($"Количество правильных ответов: {countRightAnswers}");
+                Console.Write($"{user.Name}, Ваш диагноз: ");
+                user.Diagnosis = UserDiagnoseResult.GetDiagnosis(user.CountRightAnswer,countQuestions);
+                Console.WriteLine(user.Diagnosis);
+                Console.WriteLine($"Количество правильных ответов: {user.CountRightAnswer}");
                 Console.WriteLine("--------------------------------------------------------------");
-                string Diagnosis = GetDiagnosis(countRightAnswers, countQuestions);
-                SaveFileResult(userName, countRightAnswers, Diagnosis);
+                UserStorage.SaveFileResult(user);
                 flagStartForTest = false;
 
             }
@@ -136,6 +76,20 @@ namespace GeniyIdiotConsoleApp
             }
         }
 
+        public static void OpenFileResult()
+        {
+            var AllResult = UserStorage.GetUserResults();
+            Console.WriteLine(new string('-', 90));
+            Console.WriteLine("{0, -20} | {1, -35} | {2, -30}", "Имя", "Количество правильных ответов", "Диагноз");
+            Console.WriteLine(new string('-', 90));
+            foreach (var Result in AllResult)
+            {
+                Console.WriteLine(String.Format("{0, -20} | {1, -35} | {2, -5}", Result.Name, Result.CountRightAnswer, Result.Diagnosis));
+            }
+            Console.WriteLine(new string('-', 90));
+
+        }
+
         static void Main(string[] args)
         {
             
@@ -145,7 +99,8 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine("1. Пройти тестирование" +
                 "\n2. Посмотреть результаты" +
                 "\n3. Очистить консольное меню" +
-                "\n4. Закрыть приложение");
+                "\n4. Добавить вопрос"+
+                "\n5. Закрыть приложение");
                 string InputSelect = Console.ReadLine();
                 int choise = 0;
                 bool choice_bool = int.TryParse(InputSelect, out choise);
@@ -154,10 +109,12 @@ namespace GeniyIdiotConsoleApp
                     case 1:{StartMenu();}; break;
                     case 2: { OpenFileResult(); }; break;
                     case 3: Console.Clear(); break;
-                    case 4: { flagStartMenu = false; }; break;
+                    case 4: { AddQuestion(); }; break;
+                    case 5: { flagStartMenu = false; }; break;
                     default:Console.WriteLine("Такого пункта меню нет, попробуйте ввести заново");break;
                 }
             }
         }
+
     }
 }
