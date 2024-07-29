@@ -1,6 +1,7 @@
 ﻿
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiotClassLibrary
 {
+
     public class User
     {
         public string Name;

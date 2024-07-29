@@ -1,6 +1,7 @@
 ﻿
-namespace GeniyIdiotConsoleApp
+namespace GeniyIdiotClassLibrary
 {
+
 
     public class QuestionStorage
     {
@@ -46,7 +47,7 @@ namespace GeniyIdiotConsoleApp
         {
             var result = new List<string>();
             var value = FileProvider.GetValue(@"question.txt");
-            var lines = value.Split(new char[] {'\n','\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = value.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
             var findString = lines[NumberForDel - 1];
             foreach (var item in lines)
             {

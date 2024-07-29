@@ -1,5 +1,6 @@
-﻿namespace GeniyIdiotConsoleApp
+﻿namespace GeniyIdiotClassLibrary
 {
+
     public class Question
     {
         public string Text;

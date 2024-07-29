@@ -1,5 +1,6 @@
-﻿namespace GeniyIdiotConsoleApp
+﻿namespace GeniyIdiotClassLibrary
 {
+
     public class UserStorage
     {
         public static void SaveFileResult(User user) // записать в файл
@@ -14,13 +15,13 @@
                 Console.WriteLine("Ошибка сохранения!");
             }
         }
-        public static List<User> GetUserResults() 
+        public static List<User> GetUserResults()
         {
             var value = FileProvider.GetValue(@"result.txt");
             var results = new List<User>();
-            
+
             var lines = value.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            foreach(var item in lines)
+            foreach (var item in lines)
             {
                 var values = item.Split('#');
                 string name = values[0];
@@ -31,7 +32,7 @@
             }
             return results;
 
-            
+
         }
 
     }
