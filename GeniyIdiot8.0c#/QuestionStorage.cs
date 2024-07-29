@@ -8,10 +8,9 @@ namespace GeniyIdiotConsoleApp
         {
             var value = $"{question.Text}#{question.Answer}";
             FileProvider.Append(@"question.txt", value);
-
         }
 
-        public List<Question> GetAll()
+        public static List<Question> GetAll()
         {
             List<Question> questions = new List<Question>();
             if (FileProvider.Exists(@"question.txt"))
@@ -27,7 +26,7 @@ namespace GeniyIdiotConsoleApp
                     questions.Add(results);
                 }
             }
-            else 
+            else
             {
                 questions.Add(new Question("Сколько будет два плюс два умноженное на два?", 6));
                 questions.Add(new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9));
@@ -43,12 +42,22 @@ namespace GeniyIdiotConsoleApp
 
             return questions;
         }
-        public void DeleteQuestion(int NumberForDel)
+        public static void DeleteQuestion(int NumberForDel)
         {
-            
-            
-        }
+            var result = new List<string>();
+            var value = FileProvider.GetValue(@"question.txt");
+            var lines = value.Split(new char[] {'\n','\r' }, StringSplitOptions.RemoveEmptyEntries);
+            var findString = lines[NumberForDel - 1];
+            foreach (var item in lines)
+            {
+                if (!item.Contains(findString))
+                {
+                    result.Add(item);
+                }
+            }
+            FileProvider.AppendNewFile(@"question.txt", result);
 
+        }
 
     }
 }

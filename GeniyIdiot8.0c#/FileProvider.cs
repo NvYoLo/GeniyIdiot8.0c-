@@ -10,8 +10,11 @@ namespace GeniyIdiotConsoleApp
             using (StreamWriter writer = new StreamWriter(fileName, true))
             {
                 writer.WriteLine(value);
-                
             }
+        }
+        public static void AppendNewFile(string fileName, List<string> strings)
+        {
+            File.WriteAllLines(fileName, strings);
         }
         public static string GetValue(string fileName)
         {

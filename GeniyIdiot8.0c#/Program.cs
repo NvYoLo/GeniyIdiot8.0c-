@@ -10,18 +10,34 @@ namespace GeniyIdiotConsoleApp
     {
         public static void FindIndexQuestion()
         {
-            QuestionStorage questionStorage = new QuestionStorage();
-            Console.WriteLine("Выберите номер вопроса, который необходимо удалить :");
-            Console.WriteLine(new string('-', 90));
-            var listQuestion = questionStorage.GetAll();
-            int i = 1;
-            foreach (var item in listQuestion)
+            var listQuestion = QuestionStorage.GetAll();
+            if (listQuestion.Count != 0)
             {
-                Console.WriteLine($"#{i}: {item.Text}");
-                i++;
+                Console.WriteLine("Выберите номер вопроса, который необходимо удалить :");
+                Console.WriteLine(new string('-', 90));
+
+                int i = 1;
+
+                foreach (var item in listQuestion)
+                {
+                    Console.WriteLine($"#{i}: {item.Text}");
+                    i++;
+                }
+                int NumberQuestionForRemove = GetDefNumber();
+                while (NumberQuestionForRemove < 1 || NumberQuestionForRemove > listQuestion.Count)
+                {
+                    Console.WriteLine($"Введите число от 1 до {listQuestion.Count}");
+                    NumberQuestionForRemove = GetDefNumber();
+                }
+                QuestionStorage.DeleteQuestion(NumberQuestionForRemove);
             }
-            int NumberQuestionForDel = GetDefNumber();
-            questionStorage.DeleteQuestion(NumberQuestionForDel);
+            else
+            {
+                Console.WriteLine(new string('-', 90));
+                Console.WriteLine("Список вопросов пуст!");
+                Console.WriteLine(new string('-', 90));
+            }
+            
 
 
         }
@@ -42,8 +58,8 @@ namespace GeniyIdiotConsoleApp
             {
                 Console.WriteLine("Введите имя пользователя: ");
                 User user = new User(Console.ReadLine());
-                QuestionStorage questionStorage = new QuestionStorage();
-                var questions = questionStorage.GetAll();
+                
+                var questions = QuestionStorage.GetAll();
                 
                 int countQuestions = questions.Count;
                 
