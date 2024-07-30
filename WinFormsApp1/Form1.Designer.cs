@@ -29,55 +29,120 @@
         private void InitializeComponent()
         {
             loginButton = new Button();
-            textBox1 = new TextBox();
-            label1 = new Label();
+            textBoxName = new TextBox();
+            groupBox1 = new GroupBox();
+            button1 = new Button();
+            groupBox2 = new GroupBox();
+            button3 = new Button();
+            button2 = new Button();
+            button4 = new Button();
+            groupBox1.SuspendLayout();
+            groupBox2.SuspendLayout();
             SuspendLayout();
             // 
             // loginButton
             // 
-            loginButton.Location = new Point(37, 62);
+            loginButton.Location = new Point(6, 51);
             loginButton.Name = "loginButton";
-            loginButton.Size = new Size(160, 23);
+            loginButton.Size = new Size(185, 23);
             loginButton.TabIndex = 0;
             loginButton.Text = "Войти";
             loginButton.UseVisualStyleBackColor = true;
             loginButton.Click += button1_Click;
             // 
-            // textBox1
+            // textBoxName
             // 
-            textBox1.Location = new Point(37, 33);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(160, 23);
-            textBox1.TabIndex = 1;
+            textBoxName.Location = new Point(6, 22);
+            textBoxName.Name = "textBoxName";
+            textBoxName.Size = new Size(185, 23);
+            textBoxName.TabIndex = 1;
             // 
-            // label1
+            // groupBox1
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(37, 9);
-            label1.Name = "label1";
-            label1.Size = new Size(160, 15);
-            label1.TabIndex = 2;
-            label1.Text = "Введите ваше имя для игры";
+            groupBox1.Controls.Add(loginButton);
+            groupBox1.Controls.Add(textBoxName);
+            groupBox1.Location = new Point(9, 8);
+            groupBox1.Name = "groupBox1";
+            groupBox1.Size = new Size(197, 82);
+            groupBox1.TabIndex = 3;
+            groupBox1.TabStop = false;
+            groupBox1.Text = "Введите имя для тестирования";
+            // 
+            // button1
+            // 
+            button1.Location = new Point(9, 22);
+            button1.Name = "button1";
+            button1.Size = new Size(185, 23);
+            button1.TabIndex = 4;
+            button1.Text = "Результаты тестирования";
+            button1.UseVisualStyleBackColor = true;
+            button1.Click += button1_Click_1;
+            // 
+            // groupBox2
+            // 
+            groupBox2.Controls.Add(button3);
+            groupBox2.Controls.Add(button2);
+            groupBox2.Controls.Add(button1);
+            groupBox2.Location = new Point(6, 99);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Size = new Size(200, 114);
+            groupBox2.TabIndex = 5;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "Меню";
+            // 
+            // button3
+            // 
+            button3.Location = new Point(9, 80);
+            button3.Name = "button3";
+            button3.Size = new Size(185, 23);
+            button3.TabIndex = 6;
+            button3.Text = "Удалить вопрос";
+            button3.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            button2.Location = new Point(9, 51);
+            button2.Name = "button2";
+            button2.Size = new Size(185, 23);
+            button2.TabIndex = 5;
+            button2.Text = "Добавить вопрос";
+            button2.UseVisualStyleBackColor = true;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(6, 221);
+            button4.Name = "button4";
+            button4.Size = new Size(200, 48);
+            button4.TabIndex = 6;
+            button4.Text = "Выход";
+            button4.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(231, 111);
-            Controls.Add(label1);
-            Controls.Add(textBox1);
-            Controls.Add(loginButton);
+            ClientSize = new Size(215, 281);
+            Controls.Add(button4);
+            Controls.Add(groupBox2);
+            Controls.Add(groupBox1);
             Name = "Form1";
             Text = "Вход";
             Load += Form1_Load;
+            groupBox1.ResumeLayout(false);
+            groupBox1.PerformLayout();
+            groupBox2.ResumeLayout(false);
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
 
         private Button loginButton;
-        private TextBox textBox1;
-        private Label label1;
+        private TextBox textBoxName;
+        private GroupBox groupBox1;
+        private Button button1;
+        private GroupBox groupBox2;
+        private Button button3;
+        private Button button2;
+        private Button button4;
     }
 }

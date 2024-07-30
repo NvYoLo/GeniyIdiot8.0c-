@@ -5,8 +5,8 @@ namespace WinFormsApp1
 {
     public partial class Form1 : Form
     {
-        private List<Question> questions;
-        private Question currentQuestion;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -14,16 +14,23 @@ namespace WinFormsApp1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
+
+            Form2 form2 = new Form2(this);
+            form2.user = new User(textBoxName.Text);
             form2.Show();
             this.Hide();
-            
-            
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Form3 form3 = new Form3(this);
+            form3.Show();
+            this.Hide();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
     }
 }

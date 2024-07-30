@@ -2,7 +2,6 @@
 namespace GeniyIdiotClassLibrary
 {
 
-
     public class QuestionStorage
     {
         public static void Add(Question question)

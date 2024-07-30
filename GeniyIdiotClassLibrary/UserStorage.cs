@@ -5,15 +5,10 @@
     {
         public static void SaveFileResult(User user) // записать в файл
         {
-            try
-            {
-                var value = $"{user.Name}#{user.CountRightAnswer}#{user.Diagnosis}";
-                FileProvider.Append(@"result.txt", value);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Ошибка сохранения!");
-            }
+
+            var value = $"{user.Name}#{user.CountRightAnswer}#{user.Diagnosis}";
+            FileProvider.Append(@"result.txt", value);
+
         }
         public static List<User> GetUserResults()
         {
