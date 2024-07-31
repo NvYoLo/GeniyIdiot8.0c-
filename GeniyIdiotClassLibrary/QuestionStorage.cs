@@ -1,4 +1,6 @@
 ﻿
+using System.ComponentModel;
+
 namespace GeniyIdiotClassLibrary
 {
 
@@ -10,9 +12,9 @@ namespace GeniyIdiotClassLibrary
             FileProvider.Append(@"question.txt", value);
         }
 
-        public static List<Question> GetAll()
+        public static BindingList<Question> GetAll()
         {
-            List<Question> questions = new List<Question>();
+            BindingList<Question> questions = new BindingList<Question>(); //izmenil
             if (FileProvider.Exists(@"question.txt"))
             {
                 var value = FileProvider.GetValue(@"question.txt");
@@ -42,21 +44,29 @@ namespace GeniyIdiotClassLibrary
 
             return questions;
         }
-        public static void DeleteQuestion(int NumberForDel)
+        public static int DeleteQuestion(int NumberForDel)
         {
             var result = new List<string>();
             var value = FileProvider.GetValue(@"question.txt");
             var lines = value.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            var findString = lines[NumberForDel - 1];
-            foreach (var item in lines)
+            if (NumberForDel > lines.Count() || NumberForDel <= 0)
             {
-                if (!item.Contains(findString))
+                return -1;
+            }
+            
+            else
+            {
+                var findString = lines[NumberForDel - 1];
+                foreach (var item in lines)
                 {
-                    result.Add(item);
+                    if (!item.Contains(findString))
+                    {
+                        result.Add(item);
+                    }
                 }
             }
             FileProvider.AppendNewFile(@"question.txt", result);
-
+            return 0;
         }
 
     }

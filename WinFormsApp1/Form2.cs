@@ -1,4 +1,5 @@
 ﻿using GeniyIdiotClassLibrary;
+using System.ComponentModel;
 using System.Xml.Xsl;
 using WinFormsApp1;
 
@@ -6,7 +7,7 @@ namespace GeniyIdiotWinFormsApp
 {
     public partial class Form2 : Form
     {
-        private List<Question> questions;
+        private BindingList<Question> questions;
         private Question currentQuestion;
         private int NumberQuestion = 1;
         public User user;

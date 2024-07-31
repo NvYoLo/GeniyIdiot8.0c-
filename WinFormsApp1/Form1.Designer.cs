@@ -33,7 +33,6 @@
             groupBox1 = new GroupBox();
             button1 = new Button();
             groupBox2 = new GroupBox();
-            button3 = new Button();
             button2 = new Button();
             button4 = new Button();
             groupBox1.SuspendLayout();
@@ -56,6 +55,7 @@
             textBoxName.Name = "textBoxName";
             textBoxName.Size = new Size(185, 23);
             textBoxName.TabIndex = 1;
+            textBoxName.TextChanged += textBoxName_TextChanged;
             // 
             // groupBox1
             // 
@@ -80,24 +80,14 @@
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(button3);
             groupBox2.Controls.Add(button2);
             groupBox2.Controls.Add(button1);
-            groupBox2.Location = new Point(6, 99);
+            groupBox2.Location = new Point(9, 99);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(200, 114);
+            groupBox2.Size = new Size(197, 85);
             groupBox2.TabIndex = 5;
             groupBox2.TabStop = false;
             groupBox2.Text = "Меню";
-            // 
-            // button3
-            // 
-            button3.Location = new Point(9, 80);
-            button3.Name = "button3";
-            button3.Size = new Size(185, 23);
-            button3.TabIndex = 6;
-            button3.Text = "Удалить вопрос";
-            button3.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -105,23 +95,25 @@
             button2.Name = "button2";
             button2.Size = new Size(185, 23);
             button2.TabIndex = 5;
-            button2.Text = "Добавить вопрос";
+            button2.Text = "Редактировать вопросы";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button4
             // 
-            button4.Location = new Point(6, 221);
+            button4.Location = new Point(9, 190);
             button4.Name = "button4";
-            button4.Size = new Size(200, 48);
+            button4.Size = new Size(197, 48);
             button4.TabIndex = 6;
             button4.Text = "Выход";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(215, 281);
+            ClientSize = new Size(215, 247);
             Controls.Add(button4);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
@@ -141,7 +133,6 @@
         private GroupBox groupBox1;
         private Button button1;
         private GroupBox groupBox2;
-        private Button button3;
         private Button button2;
         private Button button4;
     }
