@@ -16,9 +16,11 @@ namespace WinFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             Form2 form2 = new Form2(this);
+            MessageBox.Show("” вас будет 10 секунд на написание ответа");
             form2.user = new User(textBoxName.Text);
             form2.Show();
             this.Hide();
+            
         }
 
         private void button1_Click_1(object sender, EventArgs e)

@@ -28,11 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             button1 = new Button();
             label1 = new Label();
             label2 = new Label();
             textBoxAnswer = new TextBox();
             label3 = new Label();
+            progressBar1 = new ProgressBar();
+            timer1 = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // button1
@@ -80,11 +83,24 @@
             label3.TabIndex = 5;
             label3.Text = "Ваш ответ";
             // 
+            // progressBar1
+            // 
+            progressBar1.Location = new Point(12, 12);
+            progressBar1.Name = "progressBar1";
+            progressBar1.Size = new Size(436, 21);
+            progressBar1.TabIndex = 6;
+            // 
+            // timer1
+            // 
+            timer1.Interval = 1000;
+            timer1.Tick += timer1_Tick;
+            // 
             // Form2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(460, 190);
+            Controls.Add(progressBar1);
             Controls.Add(label3);
             Controls.Add(textBoxAnswer);
             Controls.Add(label2);
@@ -104,5 +120,7 @@
         private Label label2;
         private TextBox textBoxAnswer;
         private Label label3;
+        private ProgressBar progressBar1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
