@@ -12,6 +12,13 @@ namespace GeniyIdiotClassLibrary
                 writer.WriteLine(value);
             }
         }
+        public static void Replace(string fileName, string value)
+        {
+            using (StreamWriter writer = new StreamWriter(fileName, false))
+            {
+                writer.WriteLine(value);
+            }
+        }
         public static void AppendNewFile(string fileName, List<string> strings)
         {
             File.WriteAllLines(fileName, strings);

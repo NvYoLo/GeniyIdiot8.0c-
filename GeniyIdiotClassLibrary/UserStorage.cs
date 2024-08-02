@@ -1,34 +1,37 @@
-﻿namespace GeniyIdiotClassLibrary
+﻿using Newtonsoft.Json;
+using System.Xml.Linq;
+
+namespace GeniyIdiotClassLibrary
 {
 
     public class UserStorage
     {
+        public static string Path = @"result.json";
         public static void SaveFileResult(User user) // записать в файл
         {
-
-            var value = $"{user.Name}#{user.CountRightAnswer}#{user.Diagnosis}";
-            FileProvider.Append(@"result.txt", value);
+            var userResult = GetUserResults();
+            userResult.Add(user);
+            Save(userResult);
 
         }
         public static List<User> GetUserResults()
         {
-            var value = FileProvider.GetValue(@"result.txt");
-            var results = new List<User>();
 
-            var lines = value.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in lines)
+            if (!FileProvider.Exists(Path))
             {
-                var values = item.Split('#');
-                string name = values[0];
-                int countRightAnswer = int.Parse(values[1]);
-                string diagnosis = values[2];
-                User user = new User(name, countRightAnswer, diagnosis);
-                results.Add(user);
+                return new List<User>();
             }
-            return results;
+            var value = FileProvider.GetValue(Path);
+            var userResult = JsonConvert.DeserializeObject<List<User>>(value);
+            return userResult;
 
 
         }
-
+        public static void Save(List<User> userResult)
+        {
+            var jsonData = JsonConvert.SerializeObject(userResult, Formatting.Indented);
+            FileProvider.Replace(Path, jsonData);
+        }
     }
+
 }

@@ -1,4 +1,5 @@
 ﻿
+using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace GeniyIdiotClassLibrary
@@ -6,27 +7,27 @@ namespace GeniyIdiotClassLibrary
 
     public class QuestionStorage
     {
+        
+        public static string Path = @"question.json";
         public static void Add(Question question)
         {
-            var value = $"{question.Text}#{question.Answer}";
-            FileProvider.Append(@"question.txt", value);
+            var resultQuestion = GetAll();
+            resultQuestion.Add(question);
+            Save(resultQuestion);
+        }
+        public static void Save(BindingList<Question> questionResult)
+        {
+            var jsonData = JsonConvert.SerializeObject(questionResult, Formatting.Indented);
+            FileProvider.Replace(Path, jsonData);
         }
 
         public static BindingList<Question> GetAll()
         {
-            BindingList<Question> questions = new BindingList<Question>(); //izmenil
-            if (FileProvider.Exists(@"question.txt"))
+           var questions = new BindingList<Question>();
+            if (FileProvider.Exists(Path))
             {
-                var value = FileProvider.GetValue(@"question.txt");
-                var lines = value.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-                foreach (var item in lines)
-                {
-                    var values = item.Split('#');
-                    string questionText = values[0];
-                    int questionAnswer = int.Parse(values[1]);
-                    var results = new Question(questionText, questionAnswer);
-                    questions.Add(results);
-                }
+                var value = FileProvider.GetValue(Path);
+                questions = JsonConvert.DeserializeObject<BindingList<Question>>(value);
             }
             else
             {
@@ -36,36 +37,19 @@ namespace GeniyIdiotClassLibrary
                 questions.Add(new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60));
                 questions.Add(new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 2));
 
-                foreach (var question in questions)
-                {
-                    Add(question);
-                }
+                Save(questions);
             }
-
             return questions;
         }
         public static int DeleteQuestion(int NumberForDel)
         {
-            var result = new List<string>();
-            var value = FileProvider.GetValue(@"question.txt");
-            var lines = value.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-            if (NumberForDel > lines.Count() || NumberForDel <= 0)
+            var questions = GetAll();
+            if (NumberForDel <= 0 || NumberForDel > questions.Count)
             {
                 return -1;
             }
-            
-            else
-            {
-                var findString = lines[NumberForDel - 1];
-                foreach (var item in lines)
-                {
-                    if (!item.Contains(findString))
-                    {
-                        result.Add(item);
-                    }
-                }
-            }
-            FileProvider.AppendNewFile(@"question.txt", result);
+            questions.RemoveAt(NumberForDel - 1);
+            Save(questions);
             return 0;
         }
 

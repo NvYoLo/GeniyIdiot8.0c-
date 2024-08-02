@@ -41,6 +41,7 @@ namespace GeniyIdiotWinFormsApp
 
         private void button2_Click(object sender, EventArgs e)
         {
+            var allQuestion = QuestionStorage.GetAll();
             var result = QuestionStorage.DeleteQuestion(int.Parse(textBox3.Text));
             if (result == 0)
             {
